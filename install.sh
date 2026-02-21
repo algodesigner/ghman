@@ -30,18 +30,41 @@ PROJECT_DIR="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
 EOF
 chmod +x ghman
 
-# 5. Final instructions
+# 5. Create symlink in /usr/local/bin
 INSTALL_DIR="/usr/local/bin"
 PROJECT_DIR=$(pwd)
+SYMLINK_CREATED=false
 
+echo "Attempting to create symlink in $INSTALL_DIR..."
+
+if [ -w "$INSTALL_DIR" ]; then
+    ln -sf "$PROJECT_DIR/ghman" "$INSTALL_DIR/ghman"
+    SYMLINK_CREATED=true
+else
+    echo "Requires sudo to create symlink in $INSTALL_DIR"
+    if sudo ln -sf "$PROJECT_DIR/ghman" "$INSTALL_DIR/ghman"; then
+        SYMLINK_CREATED=true
+    else
+        echo "Warning: Failed to create symlink. You may need to do it manually."
+    fi
+fi
+
+# 6. Final instructions
 echo ""
 echo "Installation complete!"
 echo ""
-echo "To run ghman from anywhere, you can:"
-echo "1. Symlink the wrapper (requires sudo):"
-echo "   sudo ln -sf $PROJECT_DIR/ghman $INSTALL_DIR/ghman"
+
+if [ "$SYMLINK_CREATED" = true ]; then
+    echo "ghman has been linked to $INSTALL_DIR/ghman"
+    echo "You can now run 'ghman' from anywhere!"
+else
+    echo "To run ghman from anywhere, you can:"
+    echo "1. Symlink the wrapper (requires sudo):"
+    echo "   sudo ln -sf $PROJECT_DIR/ghman $INSTALL_DIR/ghman"
+    echo ""
+    echo "2. Or add this directory to your PATH (add to ~/.zshrc or ~/.bashrc):"
+    echo "   export PATH=\"\$PATH:$PROJECT_DIR\""
+fi
+
 echo ""
-echo "2. Or add this directory to your PATH (add to ~/.zshrc or ~/.bashrc):"
-echo "   export PATH=\"\$PATH:$PROJECT_DIR\""
-echo ""
-echo "Try running: ./ghman --help"
+echo "Try running: ghman --help"

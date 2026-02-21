@@ -1,6 +1,6 @@
 # ghman
 
-A simple GitHub repository manager CLI utility.
+A simple GitHub repository manager CLI utility designed to streamline your workflow. `ghman` saves you time by automating the creation and linking of local projects to GitHub in a single command, and provides a quick way to list and track all your existing repositories directly from the terminal.
 
 ## Prerequisites
 
@@ -86,15 +86,16 @@ List all repositories on your GitHub account:
 ```
 
 ### Add Local Repository
-Add the current directory as a new repository on GitHub:
+Add the current directory as a new or existing repository on GitHub:
 ```bash
-./ghman add <repo-name>
+./ghman add [repo-name]
 ```
 
 Options:
+- `[repo-name]`: Optional name for the GitHub repository (defaults to the current directory name).
 - `--public`: Create a public repository (default is private).
 
 ## Features
-- Checks if a repository already exists on GitHub before creating it.
-- Automatically initialises a local Git repository if one doesn't exist.
+- Checks if a repository already exists on GitHub and link to it if so.
+- Requires an existing local Git repository.
 - Adds the correct remote and pushes local code.

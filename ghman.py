@@ -47,32 +47,33 @@ def handle_auth(args):
 
 def handle_add(args):
     repo_name = args.name
+    if not repo_name:
+        repo_name = os.path.basename(os.getcwd())
+    
+    # 1. Ensure local Git repository exists
+    if not os.path.exists(".git"):
+        print("Error: Current directory is not a Git repository.")
+        print("Please run 'git init' and add some files first.")
+        sys.exit(1)
+
     client = GitHubClient()
 
-    # 1. Check if repository exists on GitHub
+    # 2. Check if repository exists on GitHub
     print(f"Checking if repository '{repo_name}' already exists on GitHub...")
-    existing_repo = client.get_repository(repo_name)
-    if existing_repo:
-        print(
-            f"Error: Repository '{repo_name}' already exists on your "
-            "GitHub account."
-        )
-        sys.exit(1)
+    repo = client.get_repository(repo_name)
+    if repo:
+        print(f"Repository '{repo_name}' already exists on GitHub. Using existing.")
+    else:
+        # 3. Create the repository on GitHub
+        print(f"Creating repository '{repo_name}' on GitHub...")
+        repo = client.create_repository(repo_name, private=args.private)
+        if not repo:
+            print(f"Error: Failed to create repository '{repo_name}'.")
+            sys.exit(1)
+        print(f"Successfully created: {repo.html_url}")
 
-    # 2. Create the repository on GitHub
-    print(f"Creating repository '{repo_name}' on GitHub...")
-    repo = client.create_repository(repo_name, private=args.private)
-    if not repo:
-        print(f"Error: Failed to create repository '{repo_name}'.")
-        sys.exit(1)
-
-    print(f"Successfully created: {repo.html_url}")
-
-    # 3. Handle local Git setup
+    # 4. Handle local Git setup
     print("Setting up local repository...")
-    if not os.path.exists(".git"):
-        print("Initialising local Git repository...")
-        run_command(["git", "init"])
 
     # Add remote
     print(f"Adding remote 'origin' to {repo.ssh_url}...")
@@ -125,7 +126,7 @@ def main():
         "add", help="Add the current local repository to GitHub"
     )
     add_parser.add_argument(
-        "name", help="Name of the repository to create on GitHub"
+        "name", nargs="?", help="Name of the repository to create on GitHub (defaults to directory name)"
     )
     add_parser.add_argument(
         "--public", action="store_false", dest="private",

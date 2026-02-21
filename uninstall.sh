@@ -7,10 +7,11 @@ echo "Uninstalling ghman..."
 # 1. Remove symlink if it exists
 INSTALL_DIR="/usr/local/bin"
 if [ -L "$INSTALL_DIR/ghman" ]; then
-    echo "Removing symlink $INSTALL_DIR/ghman (may require sudo)..."
-    if [ -w "$INSTALL_DIR" ]; then
+    echo "Removing symlink $INSTALL_DIR/ghman..."
+    if [ -w "$INSTALL_DIR/ghman" ] || [ -w "$INSTALL_DIR" ]; then
         rm "$INSTALL_DIR/ghman"
     else
+        echo "Requires sudo to remove symlink from $INSTALL_DIR"
         sudo rm "$INSTALL_DIR/ghman"
     fi
 fi
