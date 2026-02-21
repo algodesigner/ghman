@@ -25,7 +25,13 @@ echo "Installing dependencies into .venv..."
 echo "Creating wrapper script 'ghman'..."
 cat << EOF > ghman
 #!/bin/bash
-PROJECT_DIR="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
+SOURCE="\${BASH_SOURCE[0]}"
+while [ -h "\$SOURCE" ]; do
+  DIR="\$( cd -P "\$( dirname "\$SOURCE" )" && pwd )"
+  SOURCE="\$(readlink "\$SOURCE")"
+  [[ \$SOURCE != /* ]] && SOURCE="\$DIR/\$SOURCE"
+done
+PROJECT_DIR="\$( cd -P "\$( dirname "\$SOURCE" )" && pwd )"
 "\$PROJECT_DIR/.venv/bin/python3" "\$PROJECT_DIR/ghman.py" "\$@"
 EOF
 chmod +x ghman
