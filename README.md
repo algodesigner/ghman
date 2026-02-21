@@ -99,3 +99,6 @@ Options:
 - Checks if a repository already exists on GitHub and link to it if so.
 - Requires an existing local Git repository.
 - Adds the correct remote and pushes local code.
+## License
+
+This project is licensed under the BSD 3-Clause License - see the [LICENSE](file:///Users/vlad/.gemini/antigravity/scratch/ghman/LICENSE) file for details.
