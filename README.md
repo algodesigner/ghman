@@ -96,5 +96,5 @@ Options:
 
 ## Features
 - Checks if a repository already exists on GitHub before creating it.
-- Automatically initializes a local Git repository if one doesn't exist.
+- Automatically initialises a local Git repository if one doesn't exist.
 - Adds the correct remote and pushes local code.

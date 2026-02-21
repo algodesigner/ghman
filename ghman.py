@@ -71,7 +71,7 @@ def handle_add(args):
     # 3. Handle local Git setup
     print("Setting up local repository...")
     if not os.path.exists(".git"):
-        print("Initializing local Git repository...")
+        print("Initialising local Git repository...")
         run_command(["git", "init"])
 
     # Add remote
