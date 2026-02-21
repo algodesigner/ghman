@@ -5,7 +5,7 @@ A simple GitHub repository manager CLI utility designed to streamline your workf
 ## Prerequisites
 
 - Python 3.6+
-- A GitHub Personal Access Token (PAT) with `repo` scope.
+- A GitHub Personal Access Token (PAT) with `repo` and `delete_repo` scopes.
 
 ## Installation
 
@@ -44,13 +44,13 @@ This will:
 
 ### Obtain a GitHub Personal Access Token (PAT)
 
-To use `ghman`, you need a GitHub PAT with `repo` scope:
+To use `ghman`, you need a GitHub PAT with `repo` and `delete_repo` scopes:
 
 1.  Log in to your [GitHub account](https://github.com).
 2.  Navigate to **Settings** > **Developer settings** > **Personal access tokens** > **Tokens (classic)**.
 3.  Click **Generate new token** (select **Generate new token (classic)**).
 4.  Give it a descriptive name (e.g., "ghman CLI").
-5.  Select the **`repo`** scope (this allows creating and managing repositories).
+5.  Select the **`repo`** and **`delete_repo`** scopes (this allows creating, managing, and deleting repositories).
 6.  Click **Generate token** at the bottom.
 7.  **Copy the token immediately**—you won't be able to see it again!
 
@@ -94,6 +94,12 @@ Add the current directory as a new or existing repository on GitHub:
 Options:
 - `[repo-name]`: Optional name for the GitHub repository (defaults to the current directory name).
 - `--public`: Create a public repository (default is private).
+
+### Delete Repository
+Delete a repository from GitHub (requires confirmation):
+```bash
+./ghman delete [repo-name]
+```
 
 ## Features
 - Checks if a repository already exists on GitHub and link to it if so.

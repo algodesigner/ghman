@@ -110,6 +110,24 @@ def handle_add(args):
 
     print("\nDone! Your repository is now on GitHub.")
 
+def handle_delete(args):
+    repo_name = args.name
+    client = GitHubClient()
+    
+    # Confirmation prompt
+    print(f"WARNING: You are about to delete repository '{repo_name}' from GitHub.")
+    print("This action is irreversible.")
+    confirm = input(f"Type '{repo_name}' to confirm deletion: ")
+    
+    if confirm == repo_name:
+        print(f"Deleting repository '{repo_name}'...")
+        if client.delete_repository(repo_name):
+            print(f"Successfully deleted repository '{repo_name}'.")
+        else:
+            print(f"Failed to delete repository '{repo_name}'.")
+    else:
+        print("Deletion cancelled. Confirmation name did not match.")
+
 def main():
     parser = argparse.ArgumentParser(
         description="ghman: A simple GitHub repository manager."
@@ -134,6 +152,14 @@ def main():
     )
     add_parser.set_defaults(private=True)
 
+    # Delete command
+    delete_parser = subparsers.add_parser(
+        "delete", help="Delete a repository from GitHub"
+    )
+    delete_parser.add_argument(
+        "name", help="Name of the repository to delete"
+    )
+
     # Auth command
     auth_parser = subparsers.add_parser(
         "auth", help="Configure GitHub authentication"
@@ -150,6 +176,8 @@ def main():
         handle_add(args)
     elif args.command == "auth":
         handle_auth(args)
+    elif args.command == "delete":
+        handle_delete(args)
     else:
         parser.print_help()
 

@@ -52,6 +52,16 @@ class GitHubClient:
         except GithubException:
             return None
 
+    def delete_repository(self, name):
+        """Deletes a repository from GitHub."""
+        try:
+            repo = self.user.get_repo(name)
+            repo.delete()
+            return True
+        except GithubException as e:
+            print(f"Error deleting repository: {e}")
+            return False
+
     def _load_token(self):
         """Loads the token from environment or config file."""
         # 1. Check environment variable
